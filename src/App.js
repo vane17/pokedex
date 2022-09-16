@@ -3,6 +3,7 @@ import {useSelector, useDispatch} from 'react-redux';
 
 import { PokemonList } from './components/PokemonList';
 import {getPokemon} from './api/index.js';
+import {getPokemonDetails} from './api/index';
 import {setPokemons} from './actions/index'; //as cambia el nombre 
 
 import {Searcher} from './components/Searcher';
@@ -21,8 +22,11 @@ function App() {
   useEffect(() => {
     const fetchPokemons = async () => {
       const pokemonsRes = await getPokemon();
-      dispatch(setPokemons(pokemonsRes));
+
+      const pokemonDetails = await Promise.all(pokemonsRes.map(pokemon => getPokemonDetails(pokemon)))
+      dispatch(setPokemons(pokemonDetails));
     };
+   
     fetchPokemons();
   },[]);
 

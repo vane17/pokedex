@@ -8,4 +8,14 @@ const getPokemon = () => {
         .catch((error) => console.error(error));
 }
 
-export {getPokemon};
+
+
+const getPokemonDetails = (pokemon) => {
+    return axios.get(pokemon.url)
+        //.then((response) => console.log(response.data.results))
+        .then((response) => response.data)
+        .catch((error) => console.error(error));
+}
+
+
+export {getPokemon, getPokemonDetails};

@@ -3,17 +3,21 @@ import {Card} from 'antd';
 import Meta from 'antd/lib/card/Meta';
 
 
-const PokemonCard = ({name}) => {
+const PokemonCard = ({name, image, abilities}) => {
   return (
     <Card 
         title = {name}
-        cover = {<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/150.png" 
-        alt="dito" />}
+        cover = {<img src= {image} alt={name} />}
         extra = {<StarOutlined/>}>
             
-        <Meta description="fire, magic"/>
+        <Meta description={renderHabilities(abilities)}/>
     </Card>
   )
+}
+
+const renderHabilities = (abilities) =>{
+  return abilities.map((ability)=> ability.ability.name).join(',');
+
 }
 
 export {PokemonCard}
