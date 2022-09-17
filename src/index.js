@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import { applyMiddleware,
   compose,
   legacy_createStore as createStore } from 'redux';
+
+import thunk from 'redux-thunk';
 import {logger} from './middlewares/index';
 import App from './App';
 import './index.css';
@@ -13,13 +15,13 @@ import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-const composeEnharces = compose( window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-applyMiddleware(logger)); //se pasa los enhancer 
+const composeAlt = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
+const composedEnhancers = composeAlt(applyMiddleware(thunk, logger))
 
 const store = createStore(
   pokemonsReducer,
-  composeEnharces,
+  composedEnhancers,
 );
 
 root.render(

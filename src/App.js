@@ -3,11 +3,11 @@ import {useSelector, useDispatch} from 'react-redux';
 
 import { PokemonList } from './components/PokemonList';
 import {getPokemon} from './api/index.js';
-import {getPokemonDetails} from './api/index';
-import {setPokemons} from './actions/index'; //as cambia el nombre 
+
+import {getPokemonsWithDetails, setLoading} from './actions/index'; //as cambia el nombre 
 
 import {Searcher} from './components/Searcher';
-import { Col } from 'antd'; // para manejar el grid 
+import { Col, Spin } from 'antd'; // para manejar el grid 
 
 import logo from './statics/logo.svg';
 import './App.css';
@@ -17,14 +17,23 @@ import './App.css';
 function App() {
 
   const pokemons = useSelector(state => state.pokemons);
+  const loading = useSelector(state => state.loading)// retorna la propiedad del estado a la que se quiere acceder
   const dispatch = useDispatch();
  
   useEffect(() => {
     const fetchPokemons = async () => {
-      const pokemonsRes = await getPokemon();
+      dispatch(setLoading(true));
 
-      const pokemonDetails = await Promise.all(pokemonsRes.map(pokemon => getPokemonDetails(pokemon)))
-      dispatch(setPokemons(pokemonDetails));
+      setTimeout(async() => {
+      
+        const pokemonsRes = await getPokemon();
+        dispatch(getPokemonsWithDetails(pokemonsRes));
+        dispatch(setLoading(false))
+        
+      },2000)
+      
+
+     
     };
    
     fetchPokemons();
@@ -38,7 +47,13 @@ function App() {
       <Col span={8} offset={8}> {/*Hasta donde se expande es 16 8 sea centrado y offset hasta donde se expande*/}
         <Searcher />
       </Col>
-      <PokemonList pokemons = {pokemons}/>
+
+      {loading ? <Col offset={12} >
+        <Spin spinning size='large'/>
+      </Col> : <PokemonList pokemons = {pokemons}/>}
+      
+      
+      
 
       
       
