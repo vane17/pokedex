@@ -16,9 +16,10 @@ import './App.css';
 
 function App() {
 
-  const pokemons = useSelector(state => state.pokemons);
-  const loading = useSelector(state => state.loading)// retorna la propiedad del estado a la que se quiere acceder
-  const dispatch = useDispatch();
+  const pokemons = useSelector(state => state.get('pokemons')).toJS();
+ const loading = useSelector(state => state.get('loading'))// retorna la propiedad del estado a la que se quiere acceder
+  
+ const dispatch = useDispatch();
  
   useEffect(() => {
     const fetchPokemons = async () => {
